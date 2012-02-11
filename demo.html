@@ -35,10 +35,13 @@
                 });
                 var startNode = grid.node(1, 2);
                 var endNode = grid.node(1, 10);
-                var path = new PathFindr.Path(startNode, endNode, grid.isPassable.bind(grid), options);
+                var path;
                 var start = new Date().getTime();
-                path.nodes();
-                var time = new Date().getTime() - start;
+                for(var i = 0; i < 100; ++i) {
+                    path = new PathFindr.Path(startNode, endNode, grid.isPassable.bind(grid), options);
+                    path.nodes();
+                }
+                var time = (new Date().getTime() - start)/100;
                 document.getElementById('time').innerText = time+"ms";
                 PathFindr.drawMap(grid, path, canvas, options);
             })();
