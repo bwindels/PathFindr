@@ -1,5 +1,5 @@
 var PathFindr = PathFindr || {};
-PathFindr.AStar = (function() {    
+PathFindr.Path = (function() {    
     function find(array, fn) {
         var index;
         var found = array.some(function(a, i) {
@@ -9,20 +9,28 @@ PathFindr.AStar = (function() {
         return found ? index : -1;
     }
     
-    function AStar(startPos, endPos, isPassable) {
-        this.startPos = startPos;
-        this.endPos = endPos;
+    function Path(startNode, endNode, isPassable, options) {
+        this.startNode = startNode;
+        this.endNode = endNode;
         this.isPassable = isPassable;
+        this.options = options;
     }
     
-    AStar.prototype.calculatePath = function(debug) {
-        var openList = [new PathNode(this.startPos.x, this.startPos.y)];
+    Path.prototype.nodes = function() {
+        if(!this.pathNodes) {
+            this.pathNodes = this._calculatePath();
+        }
+        return this.pathNodes;
+    };
+    
+    Path.prototype._calculatePath = function() {
+        var openList = [this.startNode];
         var closedList = [];
-        var endPos = this.endPos;
         var currentNode, adjecents;
+        var self = this;
         
         function totalCost(n) {
-            return n.costFromStart() + n.estimatedCostTo(endPos);
+            return n.costFromStart() + n.estimatedCostTo(self.endNode);
         }
 
         function compareByTotalCost(a, b) {
@@ -50,7 +58,7 @@ PathFindr.AStar = (function() {
             //remove first element
             openList = openList.slice(1);
             closedList.push(currentNode);
-            if(currentNode.equal(endPos)) {
+            if(currentNode.equal(this.endNode)) {
                 break;
             }
             adjecents = currentNode.adjacentNodes(this.isPassable);
@@ -59,47 +67,26 @@ PathFindr.AStar = (function() {
             //find out if these have duplicates in the open list and which ones are better
             adjecents.forEach(updateOrAppendNode);
         }
-        
-        if(debug) {
+
+        if(this.options && this.options.debug) {
             this.openList = openList;
             this.closedList = closedList;
         }
         
-        if(currentNode.equal(endPos)) {
+        if(currentNode.equal(this.endNode)) {
             return currentNode.path();
         } else {
             return null;    //no path found
         }
     };
+    return Path;
+})();
+
+PathFindr.PathNode = (function() {
     
-    function PathNode(x, y, parent) {
-        this.x = x;
-        this.y = y;
+    function PathNode(parent) {
         this.parent = parent;
     }
-    
-    PathNode.prototype.cost = function() {
-        if(!this.parent) {
-            return 0;
-        }
-        if(this.x !== this.parent.x && this.y !== this.parent.y) {
-            return 1.41;
-        }
-        return 1;
-    };
-    
-    PathNode.prototype.costFromStart = function() {
-        var cost = 0;
-        if(this.parent) {
-            cost = this.parent.costFromStart();
-        }
-        cost += this.cost();
-        return cost;
-    };
-    
-    PathNode.prototype.estimatedCostTo = function(p) {
-        return Math.abs(p.x - this.x) + Math.abs(p.y - this.y);
-    };
     
     PathNode.prototype.path = function() {
         var path;
@@ -112,50 +99,34 @@ PathFindr.AStar = (function() {
         return path;
     };
     
-    PathNode.prototype.equal = function(p) {
-        return p.x === this.x && p.y === this.y;
+    PathNode.prototype.costFromStart = function() {
+        var cost = 0;
+        if(this.parent) {
+            cost = this.parent.costFromStart();
+        }
+        cost += this.cost();
+        return cost;
+    };
+    
+    PathNode.prototype.cost = function() {
+        throw Error('implementation missing');
+    };
+    
+    PathNode.prototype.estimatedCostTo = function(n) {
+        throw Error('implementation missing');
+    };
+    
+    PathNode.prototype.equal = function(n) {
+        throw Error('implementation missing');
     };
     
     PathNode.prototype.parentOffset = function(p) {
-        if(!this.parent) {
-            return {x: 0, y: 0};
-        }
-        return {
-            x: this.parent.x - this.x,
-            y: this.parent.y - this.y
-        };
+        throw Error('implementation missing');
     };
     
     PathNode.prototype.adjacentNodes = function(isPassable) {
-        var nodes = [], self = this;
-        function addNode(relX, relY) {
-            var x = self.x + relX;
-            var y = self.y + relY;
-            if(!isPassable(x, y)) {
-                return false;
-            }
-            nodes.push(new PathNode(x, y, self));
-            return true;
-        }
-        var topPassable = addNode(0,  -1);
-        var bottomPassable = addNode(0,  1);
-        var leftPassable = addNode(-1,  0);
-        var rightPassable = addNode(1,  0);
-        //add diagonal neighbours if non-diagonal neighbours are passable
-        if(topPassable && leftPassable) {
-            addNode(-1, -1);
-        }
-        if(topPassable && rightPassable) {
-            addNode(1, -1);
-        }
-        if(bottomPassable && leftPassable) {
-            addNode(-1, 1);
-        }
-        if(bottomPassable && rightPassable) {
-            addNode(1, 1);
-        }
-        return nodes;
+        throw Error('implementation missing');
     };
     
-    return AStar;
+    return PathNode;
 })();

@@ -5,30 +5,37 @@
         <canvas id="map"></canvas>
         <script src="astar.js"></script>
         <script src="astar-graph.js"></script>
+        <script src="squaregrid.js"></script>
+        
         <script>
             (function() {
-                var map = {
-                    width: 25,
-                    height: 25,
+                var options = {
                     pixelsPerTile: 20,
                     borderWidth: 1,
-                    endPos: {x: 1, y: 10},
-                    startPos: {x: 1, y: 2},
-                    obstacles: [
-                        {x: 4, y: 0, height: 5},
-                        {x: 1, y: 5, width: 4},
-                        {x: 0, y: 7, width: 19, height: 2},
-                        {x: 8, y: 2, height: 5},
-                        {x: 12, y: 0, height: 5},
-                        {x: 16, y: 2, height: 5},
-                        {x: 12, y: 8, height: 5},
-                        {x: 8, y: 10, height: 11},
-                        {x: 8, y: 18, width: 11},
-                        {x: 8, y: 18, width: 11}
-                    ]
+                    debug: false
                 };
+                var obstacles = [
+                    {x: 4, y: 0, height: 5},
+                    {x: 1, y: 5, width: 4},
+                    {x: 0, y: 7, width: 19, height: 2},
+                    {x: 8, y: 2, height: 5},
+                    {x: 12, y: 0, height: 5},
+                    {x: 16, y: 2, height: 5},
+                    {x: 12, y: 8, height: 5},
+                    {x: 8, y: 9, height: 11},
+                    {x: 8, y: 18, width: 11},
+                    {x: 8, y: 18, width: 11}
+                ];
+                
                 var canvas = document.getElementById('map');
-                PathFindr.drawMap(canvas, map, {debug: true});
+                var grid = new PathFindr.SquareGrid(25, 25);
+                obstacles.forEach(function(o) {
+                    grid.addObstacle(o);
+                });
+                var startNode = grid.node(1, 2);
+                var endNode = grid.node(1, 10);
+                var path = new PathFindr.Path(startNode, endNode, grid.isPassable.bind(grid), options);
+                PathFindr.drawMap(grid, path, canvas, options);
             })();
         </script>
     </body>
