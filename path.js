@@ -28,6 +28,7 @@ PathFindr.Path = (function() {
         var closedList = {};
         var currentNode, adjecents;
         var self = this;
+        var debug = this.options && this.options.debug;
         
         function totalCost(n) {
             return n.costFromStart() + n.estimatedCostTo(self.endNode);
@@ -55,7 +56,11 @@ PathFindr.Path = (function() {
             currentNode = openList[0];
             //remove first element
             openList = openList.slice(1);
-            closedList[currentNode.hash()] = currentNode;
+            if(debug) {
+                closedList[currentNode.hash()] = currentNode;
+            } else {
+                closedList[currentNode.hash()] = true;
+            }
             if(currentNode.equal(this.endNode)) {
                 break;
             }
@@ -66,7 +71,7 @@ PathFindr.Path = (function() {
             adjecents.forEach(updateOrAppendNode);
         }
 
-        if(this.options && this.options.debug) {
+        if(debug) {
             this.openList = openList;
             this.closedList = Object.keys(closedList).map(function(h) {return closedList[h];});
         }
