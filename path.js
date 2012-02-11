@@ -91,49 +91,40 @@ PathFindr.PathNode = (function() {
         this.parent = parent;
     }
     
-    PathNode.prototype.path = function() {
-        var path;
-        if(this.parent) {
-            path = this.parent.path();
-        } else {
-            path = [];
+    PathNode.prototype = {
+        path: function() {
+            var path;
+            if(this.parent) {
+                path = this.parent.path();
+            } else {
+                path = [];
+            }
+            path.push(this);
+            return path;
+        },
+        costFromStart: function() {
+            var cost = 0;
+            if(this.parent) {
+                cost = this.parent.costFromStart();
+            }
+            cost += this.cost();
+            return cost;
+        },
+        cost: function() {
+            throw Error('implementation missing');
+        },
+        estimatedCostTo: function(n) {
+            throw Error('implementation missing');
+        },
+        equal: function(n) {
+            throw Error('implementation missing');
+        },
+        hash: function() {
+            throw Error('implementation missing');
+        },
+        adjacentNodes: function(isPassable) {
+            throw Error('implementation missing');
         }
-        path.push(this);
-        return path;
     };
-    
-    PathNode.prototype.costFromStart = function() {
-        var cost = 0;
-        if(this.parent) {
-            cost = this.parent.costFromStart();
-        }
-        cost += this.cost();
-        return cost;
-    };
-    
-    PathNode.prototype.cost = function() {
-        throw Error('implementation missing');
-    };
-    
-    PathNode.prototype.estimatedCostTo = function(n) {
-        throw Error('implementation missing');
-    };
-    
-    PathNode.prototype.equal = function(n) {
-        throw Error('implementation missing');
-    };
-    
-    PathNode.prototype.hash = function() {
-        throw Error('implementation missing');
-    };
-    
-    PathNode.prototype.parentOffset = function(p) {
-        throw Error('implementation missing');
-    };
-    
-    PathNode.prototype.adjacentNodes = function(isPassable) {
-        throw Error('implementation missing');
-    };
-    
     return PathNode;
 })();
