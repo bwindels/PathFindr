@@ -1,5 +1,6 @@
 var PathFindr = PathFindr || {};
 PathFindr.SquareGrid = (function(){
+    
     function SquareGrid(width, height) {
         this.width = width;
         this.height = height;
@@ -7,7 +8,7 @@ PathFindr.SquareGrid = (function(){
     }
     
     SquareGrid.prototype.node = function(x, y) {
-        return new SquareGridNode(x, y);
+        return new SquareGridNode(x, y, this);
     };
     
     SquareGrid.prototype.addObstacle = function(o) {
@@ -37,8 +38,9 @@ PathFindr.SquareGrid = (function(){
         return true;
     };
     
-    function SquareGridNode(x, y, parent) {
+    function SquareGridNode(x, y, grid, parent) {
         PathFindr.PathNode.call(this, parent);
+        this.grid = grid;
         this.x = x;
         this.y = y;
     }
@@ -77,15 +79,15 @@ PathFindr.SquareGrid = (function(){
         };
     };
     
-    SquareGridNode.prototype.adjacentNodes = function(isPassable) {
+    SquareGridNode.prototype.adjacentNodes = function() {
         var nodes = [], self = this;
         function addNode(relX, relY) {
             var x = self.x + relX;
             var y = self.y + relY;
-            if(!isPassable(x, y)) {
+            if(!self.grid.isPassable(x, y)) {
                 return false;
             }
-            nodes.push(new SquareGridNode(x, y, self));
+            nodes.push(new SquareGridNode(x, y, self.grid, self));
             return true;
         }
         var topPassable = addNode(0, -1);

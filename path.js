@@ -1,5 +1,6 @@
 var PathFindr = PathFindr || {};
-PathFindr.Path = (function() {    
+PathFindr.Path = (function() {
+    
     function find(array, fn) {
         var index;
         var found = array.some(function(a, i) {
@@ -9,10 +10,9 @@ PathFindr.Path = (function() {
         return found ? index : -1;
     }
     
-    function Path(startNode, endNode, isPassable, options) {
+    function Path(startNode, endNode, options) {
         this.startNode = startNode;
         this.endNode = endNode;
-        this.isPassable = isPassable;
         this.options = options;
     }
     
@@ -64,7 +64,7 @@ PathFindr.Path = (function() {
             if(currentNode.equal(this.endNode)) {
                 break;
             }
-            adjecents = currentNode.adjacentNodes(this.isPassable);
+            adjecents = currentNode.adjacentNodes();
             //filter out nodes present in the closed list
             adjecents = adjecents.filter(notInClosedList);
             //find out if these have duplicates in the open list and which ones are better
@@ -122,7 +122,7 @@ PathFindr.PathNode = (function() {
         hash: function() {
             throw Error('implementation missing');
         },
-        adjacentNodes: function(isPassable) {
+        adjacentNodes: function() {
             throw Error('implementation missing');
         }
     };
