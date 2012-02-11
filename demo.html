@@ -3,7 +3,7 @@
     <head></head>
     <body>
         <canvas id="map"></canvas>
-        <p id="time"></p>
+        <p id="stats"></p>
         <script src="path.js"></script>
         <script src="graph.js"></script>
         <script src="squaregrid.js"></script>
@@ -13,7 +13,7 @@
                 var options = {
                     pixelsPerTile: 20,
                     borderWidth: 1,
-                    debug: false
+                    debug: true
                 };
                 var obstacles = [
                     {x: 4, y: 0, height: 5},
@@ -28,7 +28,6 @@
                     {x: 8, y: 18, width: 11}
                 ];
                 
-                var canvas = document.getElementById('map');
                 var grid = new PathFindr.SquareGrid(25, 25);
                 obstacles.forEach(function(o) {
                     grid.addObstacle(o);
@@ -42,7 +41,15 @@
                     path.nodes();
                 }
                 var time = (new Date().getTime() - start)/100;
-                document.getElementById('time').innerText = time+"ms";
+                var stats = document.getElementById('stats');
+                stats.innerText = time+"ms";
+                if(options.debug) {
+                    stats.innerText = stats.innerText + 
+                        ', openList: ' + path.openList.length + 
+                        ', closedList: ' + path.closedList.length +
+                        ', cost of path: ' + path.nodes()[path.nodes().length - 1].costFromStart();
+                }
+                var canvas = document.getElementById('map');
                 PathFindr.drawMap(grid, path, canvas, options);
             })();
         </script>
