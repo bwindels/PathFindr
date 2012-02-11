@@ -38,7 +38,7 @@
                 var path;
                 var start = new Date().getTime();
                 for(var i = 0; i < 100; ++i) {
-                    path = new PathFindr.Path(startNode, endNode, grid.isPassable.bind(grid), options);
+                    path = new PathFindr.Path(startNode, endNode, options);
                     path.nodes();
                 }
                 var time = (new Date().getTime() - start)/100;
