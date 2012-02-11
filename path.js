@@ -25,7 +25,7 @@ PathFindr.Path = (function() {
     
     Path.prototype._calculatePath = function() {
         var openList = [this.startNode];
-        var closedList = [];
+        var closedList = {};
         var currentNode, adjecents;
         var self = this;
         
@@ -37,10 +37,8 @@ PathFindr.Path = (function() {
             return totalCost(a) - totalCost(b);
         }
 
-        function notInClosedList(a) {
-            return !closedList.some(function(b) {
-                return a.equal(b);
-            });
+        function notInClosedList(n) {
+            return !closedList[n.hash()];
         }
         
         function updateOrAppendNode(node) {
@@ -57,7 +55,7 @@ PathFindr.Path = (function() {
             currentNode = openList[0];
             //remove first element
             openList = openList.slice(1);
-            closedList.push(currentNode);
+            closedList[currentNode.hash()] = currentNode;
             if(currentNode.equal(this.endNode)) {
                 break;
             }
@@ -70,7 +68,7 @@ PathFindr.Path = (function() {
 
         if(this.options && this.options.debug) {
             this.openList = openList;
-            this.closedList = closedList;
+            this.closedList = Object.keys(closedList).map(function(h) {return closedList[h];});
         }
         
         if(currentNode.equal(this.endNode)) {
@@ -117,6 +115,10 @@ PathFindr.PathNode = (function() {
     };
     
     PathNode.prototype.equal = function(n) {
+        throw Error('implementation missing');
+    };
+    
+    PathNode.prototype.hash = function() {
         throw Error('implementation missing');
     };
     

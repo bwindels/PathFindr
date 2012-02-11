@@ -63,6 +63,10 @@ PathFindr.SquareGrid = (function(){
         return n.x === this.x && n.y === this.y;
     };
     
+    SquareGridNode.prototype.hash = function(n) {
+        return this.x + '_' + this.y;
+    };
+    
     SquareGridNode.prototype.parentOffset = function(p) {
         if(!this.parent) {
             return {x: 0, y: 0};
