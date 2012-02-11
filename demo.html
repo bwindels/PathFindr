@@ -3,6 +3,7 @@
     <head></head>
     <body>
         <canvas id="map"></canvas>
+        <p id="time"></p>
         <script src="path.js"></script>
         <script src="graph.js"></script>
         <script src="squaregrid.js"></script>
@@ -35,6 +36,10 @@
                 var startNode = grid.node(1, 2);
                 var endNode = grid.node(1, 10);
                 var path = new PathFindr.Path(startNode, endNode, grid.isPassable.bind(grid), options);
+                var start = new Date().getTime();
+                path.nodes();
+                var time = new Date().getTime() - start;
+                document.getElementById('time').innerText = time+"ms";
                 PathFindr.drawMap(grid, path, canvas, options);
             })();
         </script>
