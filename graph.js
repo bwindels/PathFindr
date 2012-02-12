@@ -124,6 +124,21 @@ PathFindr.SquareGridCanvas = (function() {
         draw: function() {
             this.drawTiles();
             this.drawGrid();
+        },
+        drawRectangles: function(rects) {
+            var ctx = this.getContext();
+            rects.forEach(function(rect) {
+                var r = (Math.random() * 255).toFixed(0),
+                    g = (Math.random() * 255).toFixed(0),
+                    b = (Math.random() * 255).toFixed(0);
+                ctx.fillStyle = 'rgba('+r+','+g+','+b+',0.8)';
+                var pos = this.tilePos(rect.x1, rect.y1);
+                var size = {
+                    w: rect.width() * this.options.pixelsPerTile,
+                    h: rect.height() * this.options.pixelsPerTile
+                };
+                ctx.fillRect(pos.x, pos.y, size.w, size.h);
+            },this);
         }
     };
     return SquareGridCanvas;
