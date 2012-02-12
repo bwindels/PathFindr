@@ -62,9 +62,8 @@ PathFindr.AANavMesh = (function() {
         }
         var rect, x, y;
         
-            for(y = 0; y < grid.height; ++y) {
-                for(x = 0; x < grid.width; ++x) {
-                
+        for(y = 0; y < grid.height; ++y) {
+            for(x = 0; x < grid.width; ++x) {
                 rect = findRectangle(x, y);
                 if(rect) {
                     rects.push(rect);
