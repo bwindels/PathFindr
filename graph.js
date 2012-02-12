@@ -30,7 +30,7 @@ PathFindr.SquareGridCanvas = (function() {
         },
         drawGrid: function() {
             var ctx = this.getContext(), w, y;
-            ctx.strokeStyle = '#804000';
+            ctx.strokeStyle = 'black';
             ctx.lineWidth = this.options.borderWidth;
             ctx.beginPath();
             for(w = 0; w < this.canvas.width; w+= this.options.pixelsPerTile) {
@@ -63,7 +63,7 @@ PathFindr.SquareGridCanvas = (function() {
         },
         getTileColor: function(x, y) {
             if(this.grid.isObstacle(x, y)) {
-                return '#804000';
+                return 'black';
             }
             return null;
         },
