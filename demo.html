@@ -36,11 +36,11 @@
                 var endNode = grid.node(1, 10);
                 var path;
                 var start = new Date().getTime();
-                for(var i = 0; i < 100; ++i) {
+                for(var i = 0; i < 1; ++i) {
                     path = new PathFindr.Path(startNode, endNode, options);
                     path.nodes();
                 }
-                var time = (new Date().getTime() - start)/100;
+                var time = (new Date().getTime() - start)/1;
                 var stats = document.getElementById('stats');
                 stats.innerText = time+"ms";
                 if(options.debug) {
@@ -50,7 +50,9 @@
                         ', cost of path: ' + path.nodes()[path.nodes().length - 1].costFromStart();
                 }
                 var canvas = document.getElementById('map');
-                PathFindr.drawMap(grid, path, canvas, options);
+                var map = new PathFindr.SquareGridCanvas(grid, canvas, options);
+                map.setPath(path);
+                map.draw();
             })();
         </script>
     </body>
