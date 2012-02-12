@@ -58,19 +58,19 @@ PathFindr.drawMap = (function() {
     }
     
     function drawPath(ctx, path) {
-        function drawPathNode(node) {
+        function drawPathNode(node, i) {
             var pos = tilePixelPos(node.x, node.y);
             var center = {
                 x: pos.x + options.pixelsPerTile/2,
                 y: pos.y + options.pixelsPerTile/2
             };
-            var radius = options.pixelsPerTile / 2.2;
-            ctx.fillStyle = 'orange';
-            ctx.beginPath();
-            ctx.arc(center.x, center.y, radius, 0, Math.PI*2, true);
-            ctx.fill();
+            ctx.lineTo(center.x, center.y);
         }
+        ctx.strokeStyle = 'orange';
+        ctx.lineWidth = options.borderWidth * 8;
+        ctx.beginPath();
         path.nodes().forEach(drawPathNode);
+        ctx.stroke();
     }
     
     function drawOpenAndClosedList(ctx) {
