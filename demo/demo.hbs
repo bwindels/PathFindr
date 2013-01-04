@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+    <head></head>
+    <body>
+        <canvas id="map"></canvas>
+        <p id="stats"></p>
+        <script src="/demo/{{name}}.js"></script>
+        <script>
+            var fn = require('demo/{{name}}');
+            fn(document.getElementById('map'), document.getElementById('stats'));
+        </script>
+    </body>
+</html>
