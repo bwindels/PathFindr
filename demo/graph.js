@@ -135,7 +135,7 @@ SquareGridCanvas.prototype = {
     },
     drawRectangles: function(rects) {
         var ctx = this.getContext();
-        var colors = ['green', 'blue', 'orange'];
+        var colors = ['#66ff66', '#ccff66', '#00ff00', '#008040'];
         rects.forEach(function(rect, i) {
             /* var r = (Math.random() * 255).toFixed(0),
                 g = (Math.random() * 255).toFixed(0),
