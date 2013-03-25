@@ -16,12 +16,16 @@ module.exports = function(canvas) {
     var mesh = new NavMesh(grid);
     var map = new SquareGridCanvas(grid, canvas, options);
 
-    var startNode = mesh.node(1, 2);
-    var endNode = mesh.node(4, 10);
-    var path = new Path(startNode, endNode, options);
-    var coordinates = mesh.finishPath(path.nodes(), {x: 4, y: 10});
+    var coordinates1 = mesh.path({x: 1, y: 2}, {x: 4, y: 10});
+    var coordinates2 = mesh.path({x: 10, y: 10}, {x: 44, y: 24});
+
     map.drawNavMesh(mesh);
-    map.drawDots(coordinates, 'purple');
-    map.drawCoordinates(coordinates, 'yellow');
+    map.drawDots(coordinates1, 'blue');
+    map.drawCoordinates(coordinates1, 'blue');
+
+    map.drawDots(coordinates2, 'red');
+    map.drawCoordinates(coordinates2, 'red');
+    
+
     map.draw();
 };
