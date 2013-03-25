@@ -67,29 +67,38 @@ SquareGridCanvas.prototype = {
         return null;
     },
     drawPath: function(path, color) {
-        var ctx = this.getContext();
-        ctx.strokeStyle = ctx.fillStyle = color;
-        ctx.lineWidth = this.options.borderWidth * 8;
-        ctx.beginPath();
-        path.nodes().forEach(function(node) {
-            var center = this.tileCenter(node.x, node.y);
-            ctx.lineTo(center.x, center.y);
-        },this);
-        ctx.stroke();
-        var endPoints = [
-            this.tileCenter(path.startNode.x, path.startNode.y),
-            this.tileCenter(path.endNode.x, path.endNode.y)
+        var coordinates = path.nodes();
+        var dots = [
+            {x: path.startNode.x, y: path.startNode.y},
+            {x: path.endNode.x, y: path.endNode.y}
         ];
-        var radius = this.options.pixelsPerTile / 2.2;
-        endPoints.forEach(function(center) {
-            ctx.beginPath();
-            ctx.arc(center.x, center.y, radius, 0, Math.PI*2, true);
-            ctx.fill();
-        });
-        
+        this.drawCoordinates(coordinates, color);
+        this.drawDots(dots, color);
         if(this.options.debug) {
             this.drawPathDebugInfo(path);
         }
+    },
+    drawCoordinates: function(coordinates, color) {
+        var ctx = this.getContext();
+        ctx.strokeStyle = color;
+        ctx.lineWidth = this.options.borderWidth * 8;
+        ctx.beginPath();
+        coordinates.forEach(function(c) {
+            var center = this.tileCenter(c.x, c.y);
+            ctx.lineTo(center.x, center.y);
+        }, this);
+        ctx.stroke();
+    },
+    drawDots: function(coordinates, color) {
+        var ctx = this.getContext();
+        ctx.fillStyle = color;
+        var radius = this.options.pixelsPerTile / 2.2;
+        coordinates.forEach(function(c) {
+            var center = this.tileCenter(c.x, c.y);
+            ctx.beginPath();
+            ctx.arc(center.x, center.y, radius, 0, Math.PI*2, true);
+            ctx.fill();
+        }, this);
     },
     drawPathDebugInfo: function(path) {
         var ctx = this.getContext();
