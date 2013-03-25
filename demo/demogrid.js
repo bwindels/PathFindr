@@ -15,6 +15,8 @@ module.exports = function() {
         {x: 8, y: 18, width: 12},
         {x: 30, y: 20, width: 10},
         {x: 35, y: 10, height: 10},
+        {x: 35, y: 10, width: 9},
+
         {x: 25, y: 12, width: 2, height: 2},
         {x: 2, y: 15, width: 6},
         {x: 8, y: 13, height: 9}
